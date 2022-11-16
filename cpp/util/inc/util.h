@@ -1,3 +1,4 @@
 #pragma once
 
-#define UNUSED(x) (void) x
+
+#define ZTORRENT_UNUSED(x) (void) x

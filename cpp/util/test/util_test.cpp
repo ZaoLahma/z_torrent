@@ -18,5 +18,5 @@ class UtilTest : public ::testing::Test
 TEST(UtilTest, TestUnusedMacro)
 {
     char* unused;
-    UNUSED(unused);
+    ZTORRENT_UNUSED(unused);
 }
