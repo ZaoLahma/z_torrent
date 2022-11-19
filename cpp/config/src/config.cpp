@@ -49,15 +49,18 @@ namespace ztorrent
 
     void Config::addConfigEntry(const std::string& entryId, const std::string& entryStringValue)
     {
-        ConfigValue toAdd = Config::NOT_VALID_CONFIG_VALUE;
         if (!(sConfigEntryIdToTypeMap.end() == sConfigEntryIdToTypeMap.find(entryId)))
         {
+            ConfigValue toAdd = Config::NOT_VALID_CONFIG_VALUE;
+
             ConfigEntryType entryType = sConfigEntryIdToTypeMap.at(entryId);
-            
             switch (entryType)
             {
                 case ConfigEntryType::STRING:
                 toAdd = ConfigValue(entryStringValue);
+                break;
+                case ConfigEntryType::INTEGER:
+                toAdd = ConfigValue(std::stoi(entryStringValue));
                 break;
                 default:
                 std::cout<<"Not handled entry type: "<<static_cast<std::underlying_type_t<ConfigEntryType>>(entryType)<<std::endl;
