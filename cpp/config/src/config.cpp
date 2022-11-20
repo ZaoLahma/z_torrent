@@ -11,7 +11,8 @@ namespace ztorrent
     {
         std::map<std::string, ConfigEntryType> map;
 
-        map["working_dir"] = ConfigEntryType::STRING;
+        map["watch_dir"] = ConfigEntryType::STRING;
+        map["work_dir"] = ConfigEntryType::STRING;
 
         return map;
     }();

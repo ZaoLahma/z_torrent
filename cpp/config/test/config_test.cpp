@@ -23,7 +23,7 @@ class ConfigTest : public ::testing::Test
         configFile<<"unknown_type_entry=a value"<<std::endl;
         configFile<<"#I am a comment"<<std::endl;
         configFile<<"#   I am also a comment"<<std::endl;
-        configFile<<"working_dir="<<WORKING_DIR<<std::endl;
+        configFile<<"watch_dir="<<WORKING_DIR<<std::endl;
     }
 
     virtual void TearDown()
@@ -55,5 +55,5 @@ TEST_F(ConfigTest, TestGetExistingEntry)
 {
     ztorrent::Config config(CONFIG_PATH);
 
-    ASSERT_EQ(std::get<std::string>(config.getConfigValue("working_dir")), WORKING_DIR);
+    ASSERT_EQ(std::get<std::string>(config.getConfigValue("watch_dir")), WORKING_DIR);
 }

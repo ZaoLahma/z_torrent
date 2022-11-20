@@ -16,7 +16,7 @@ namespace ztorrent
         Config() = delete;
         Config(const std::string& configFilePath);
 
-        const ConfigValue& getConfigValue(const std::string& identifier) const;
+        virtual const ConfigValue& getConfigValue(const std::string& identifier) const;
 
         protected:
 
