@@ -11,11 +11,12 @@ namespace ztorrent
         ThreadObject();
         virtual ~ThreadObject();
         
-        virtual void start();
+        virtual void start(const bool startInNewThread = true);
         
         virtual void stop();
 
         protected:
+        bool mRunningInNewThread;
         std::atomic<bool> mRunning;
         std::thread mExecutorThread;
 

@@ -2,7 +2,7 @@
 
 namespace ztorrent
 {
-    ThreadObject::ThreadObject() : mRunning(false)
+    ThreadObject::ThreadObject() : mRunningInNewThread(false), mRunning(false)
     {
 
     }
@@ -12,10 +12,19 @@ namespace ztorrent
         stop();
     }
 
-    void ThreadObject::start()
+    void ThreadObject::start(const bool startInNewThread)
     {
         mRunning = true;
-        mExecutorThread = std::thread(&ThreadObject::run, this);
+        mRunningInNewThread = startInNewThread;
+        
+        if (startInNewThread)
+        {
+            mExecutorThread = std::thread(&ThreadObject::run, this);
+        }
+        else
+        {
+            run();
+        }
     }
 
     void ThreadObject::stop()

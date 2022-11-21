@@ -6,14 +6,14 @@ add_executable(test_ztorrent
     test/src/main.cpp 
     util/test/util_test.cpp 
     config/test/config_test.cpp
-    watch_dir/test/watch_dir_test.cpp
+    torrent_file_handler/test/watch_dir_test.cpp
     core/test/thread_object_test.cpp
 )
 target_compile_options(test_ztorrent PRIVATE -Werror -Wall -Wextra -Wconversion)
 
 add_subdirectory(util)
 add_subdirectory(config)
-add_subdirectory(watch_dir)
+add_subdirectory(torrent_file_handler)
 add_subdirectory(core)
 
 # Link the executable
@@ -21,7 +21,7 @@ target_link_libraries(ztorrent
     PRIVATE
         util
         config
-        watchdir
+        torrentfilehandler
         core
 )
 
@@ -32,6 +32,6 @@ target_link_libraries(test_ztorrent
         gmock
         util
         config
-        watchdir
+        torrentfilehandler
         core
 )

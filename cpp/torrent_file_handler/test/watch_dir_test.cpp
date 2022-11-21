@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-#include "watch_dir.h"
+#include "watch_dir_task.h"
 #include "config.h"
 
 

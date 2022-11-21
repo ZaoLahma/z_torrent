@@ -3,7 +3,8 @@
 #include <thread>
 
 #include "config.h"
-#include "watch_dir.h"
+#include "torrent_file_thread.h"
+#include "watch_dir_task.h"
 
 int main(int argc, char* argv[])
 {
@@ -19,12 +20,13 @@ int main(int argc, char* argv[])
 
     std::cout<<"configFilePath: "<<configFilePath<<std::endl;
 
+    ztorrent::TorrentFileThread torrentFileThread("TorrentFileThread");
+
     ztorrent::Config config(configFilePath);
+    std::unique_ptr<ztorrent::Task> watchDirTask = std::unique_ptr<ztorrent::Task>(new ztorrent::WatchDirTask(config));
 
-    ztorrent::WatchDir workDir(config);
-    workDir.start();
+    torrentFileThread.addTask(std::move(watchDirTask));
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(10000));
-
-    workDir.stop();
+    const bool runTaskInNewThread = false;
+    torrentFileThread.start(runTaskInNewThread);
 }
