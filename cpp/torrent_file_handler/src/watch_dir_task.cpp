@@ -1,5 +1,6 @@
 #include "watch_dir_task.h"
 #include "config.h"
+#include "torrent_file_decoder_task.h"
 
 #include <string>
 #include <filesystem>
@@ -9,7 +10,8 @@
 
 namespace ztorrent
 {
-    WatchDirTask::WatchDirTask(const Config& config) : Task("WatchDirTask"), mConfig(config)
+    WatchDirTask::WatchDirTask(const Config& config, std::shared_ptr<TorrentFileDecoderTask> torrentFileDecoder) : 
+        Task("WatchDirTask"), mConfig(config), mTorrentFileDecoder(torrentFileDecoder)
     {
     }
 
@@ -31,8 +33,11 @@ namespace ztorrent
                 {
                     const ConfigValue& workDirConfig = mConfig.getConfigValue("work_dir");
                     std::string workDirPath = std::get<std::string>(workDirConfig);
-
-                    std::rename(candidateFile.generic_string().c_str(), std::string(workDirPath + "/" + cadidateFileName).c_str());
+                    
+                    const std::string movedTorrentFilePath = std::string(workDirPath + "/" + cadidateFileName);
+                    std::rename(candidateFile.generic_string().c_str(), movedTorrentFilePath.c_str());
+                    
+                    mTorrentFileDecoder->addFileToDecode(movedTorrentFilePath);
                 }
             }
         }

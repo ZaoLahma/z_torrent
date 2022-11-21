@@ -5,6 +5,7 @@
 #include "config.h"
 #include "torrent_file_thread.h"
 #include "watch_dir_task.h"
+#include "torrent_file_decoder_task.h"
 
 int main(int argc, char* argv[])
 {
@@ -16,17 +17,29 @@ int main(int argc, char* argv[])
         exit(-1);
     }
 
+    /* Config initialization */
     const std::string& configFilePath = argv[1];
+    ztorrent::Config config(configFilePath);
 
-    std::cout<<"configFilePath: "<<configFilePath<<std::endl;
 
+    /* Task initialization */
+    auto torrentFileDecoderTask = std::shared_ptr<ztorrent::Task>(new ztorrent::TorrentFileDecoderTask());
+
+    auto watchDirTask = 
+        std::shared_ptr<ztorrent::Task>(
+            new ztorrent::WatchDirTask(
+                config, 
+                std::dynamic_pointer_cast<ztorrent::TorrentFileDecoderTask>(torrentFileDecoderTask)));
+
+
+    /* Define our threads */
     ztorrent::TorrentFileThread torrentFileThread("TorrentFileThread");
 
-    ztorrent::Config config(configFilePath);
-    std::unique_ptr<ztorrent::Task> watchDirTask = std::unique_ptr<ztorrent::Task>(new ztorrent::WatchDirTask(config));
+    torrentFileThread.addTask(watchDirTask);
+    torrentFileThread.addTask(torrentFileDecoderTask);
 
-    torrentFileThread.addTask(std::move(watchDirTask));
 
+    /* Switch it on and run away */
     const bool runTaskInNewThread = false;
     torrentFileThread.start(runTaskInNewThread);
 }

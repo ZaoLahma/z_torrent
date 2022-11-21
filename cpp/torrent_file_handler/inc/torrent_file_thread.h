@@ -15,13 +15,13 @@ namespace ztorrent
         TorrentFileThread() = delete;
         TorrentFileThread(const std::string& threadName);
 
-        void addTask(std::unique_ptr<Task> task);
+        void addTask(std::shared_ptr<Task> task);
 
         protected:
 
         private:
         const std::string mThreadName;
-        std::vector<std::unique_ptr<Task>> mTasks;
+        std::vector<std::shared_ptr<Task>> mTasks;
 
         void run();
     };

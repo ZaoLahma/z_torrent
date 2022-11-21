@@ -10,9 +10,9 @@ namespace ztorrent
 
     }
 
-    void TorrentFileThread::addTask(std::unique_ptr<Task> task)
+    void TorrentFileThread::addTask(std::shared_ptr<Task> task)
     {
-        mTasks.push_back(std::move(task));
+        mTasks.push_back(task);
     }
 
     void TorrentFileThread::run()
