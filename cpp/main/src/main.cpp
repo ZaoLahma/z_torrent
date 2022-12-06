@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
     ztorrent::Config config(configFilePath);
 
 
-    /* Task initialization */
+    /* Torrent file task initialization */
     auto torrentFileDecoderTask = std::shared_ptr<ztorrent::Task>(new ztorrent::TorrentFileDecoderTask());
 
     auto watchDirTask = 
@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
     torrentFileThread.addTask(torrentFileDecoderTask);
 
 
-    /* Switch it on and run away */
+    /* Switch it on, take cover behind that rock, and carefully peek over at the explosion */
     const bool runTaskInNewThread = false;
     torrentFileThread.start(runTaskInNewThread);
 }

@@ -12,9 +12,10 @@ add_executable(test_ztorrent
 target_compile_options(test_ztorrent PRIVATE -Werror -Wall -Wextra -Wconversion)
 
 add_subdirectory(util)
+add_subdirectory(core)
 add_subdirectory(config)
 add_subdirectory(torrent_file_handler)
-add_subdirectory(core)
+add_subdirectory(torrent_data)
 
 # Link the executable
 target_link_libraries(ztorrent

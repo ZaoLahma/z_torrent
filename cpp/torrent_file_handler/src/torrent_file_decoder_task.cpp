@@ -1,6 +1,9 @@
 #include "torrent_file_decoder_task.h"
+#include "torrent_file_decoder.h"
+#include "torrent_attribute.h"
 
 #include <iostream>
+#include <fstream>
 
 namespace ztorrent
 {
@@ -19,8 +22,22 @@ namespace ztorrent
         for (const auto& torrentFilePath : mFilesToDecode)
         {
             std::cout<<"torrentFilePath to decode: "<<torrentFilePath<<std::endl;
+
+            auto torrentFile = std::ifstream(torrentFilePath);
+
+            /* TODO: Decode and notify */
+            decodeTorrentFile(torrentFile);
         }
 
         mFilesToDecode.clear();
+    }
+
+    void TorrentFileDecoderTask::decodeTorrentFile(std::ifstream& torrentFile)
+    {
+        std::string fileContents((std::istreambuf_iterator<char>(torrentFile)), std::istreambuf_iterator<char>());
+
+        std::cout<<"fileContents: "<<fileContents<<std::endl;
+
+        std::shared_ptr<TorrentAttribute> decodedFile = TorrentFileDecoder::decodeTorrentFileContents(fileContents);
     }
 }

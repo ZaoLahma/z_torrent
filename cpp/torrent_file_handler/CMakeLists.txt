@@ -4,6 +4,7 @@ target_link_libraries(torrentfilehandler
     PUBLIC
         config
         core
+        torrentdata
   )
 
 target_sources(torrentfilehandler

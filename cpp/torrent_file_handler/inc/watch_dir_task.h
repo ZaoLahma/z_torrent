@@ -7,8 +7,13 @@
 
 namespace ztorrent
 {
-    class TorrentFileDecoderTask;
+    class TorrentFileDecoderTask; /* Behold, a forward declaration! */
 
+    /*
+       The WatchDirTask monitors the... watch_dir, moves torrent files
+       to the work_dir and notifies the TorrentFileDecoderTask that it
+       should do... things.
+    */
     class WatchDirTask : public Task
     {
         public:

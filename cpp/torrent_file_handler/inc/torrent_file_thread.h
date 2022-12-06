@@ -9,6 +9,10 @@
 
 namespace ztorrent
 {
+    /*
+        The idea / purpose of this class is for it to be
+        the thing in the system that handles torrent files.
+    */
     class TorrentFileThread : public ThreadObject
     {
         public:
