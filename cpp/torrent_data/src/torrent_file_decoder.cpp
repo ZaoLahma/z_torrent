@@ -1,7 +1,11 @@
 #include "torrent_file_decoder.h"
 #include "torrent_dict_attribute.h"
+#include "torrent_list_attribute.h"
+#include "torrent_string_attribute.h"
 #include <string>
 #include <iostream>
+#include <chrono>
+#include <thread>
 
 
 /*
@@ -47,63 +51,97 @@ namespace ztorrent
 
     std::shared_ptr<TorrentAttribute> TorrentFileDecoder::decodeTorrentFileContents(const std::string& torrentFileContents)
     {
-        std::shared_ptr<TorrentDictAttribute> retVal = std::shared_ptr<TorrentDictAttribute>(new TorrentDictAttribute());
+        unsigned int index = 0u;
 
-        for (unsigned int i = 1u; i < torrentFileContents.length(); ++i)
+        return decodeAttributes(torrentFileContents, index);
+    }
+
+    std::shared_ptr<TorrentAttribute> TorrentFileDecoder::decodeAttributes(const std::string& torrentFileContents, unsigned int& i)
+    {
+        std::shared_ptr<TorrentAttribute> retVal = nullptr;
+
+        char typeIndicator = torrentFileContents.at(i);
+
+        std::cout<<"typeIndicator: "<<typeIndicator<<std::endl;
+
+        switch (typeIndicator)
         {
-            char typeIndicator = torrentFileContents.at(i);
-
-            switch (typeIndicator)
+            case 'd':
+                retVal = decodeDictionary(torrentFileContents, i); /* Should this be the entry point?! */
+            break;
+            case 'l':
+                retVal = decodeList(torrentFileContents, i);
+            break;
+            case 'i':
+                retVal = decodeInteger(torrentFileContents, i);
+            break;
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
             {
-                case 'd':
-                    (void) decodeDictionary(torrentFileContents, i); /* Should this be the entry point?! */
-                break;
-                case 'l':
-                    (void) decodeList(torrentFileContents, i);
-                break;
-                case 'i':
-                    (void) decodeInteger(torrentFileContents, i);
-                break;
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
-                    (void) decodeString(torrentFileContents, i);
-                break;
-
-                default:
-                break;
-
+                retVal = decodeString(torrentFileContents, i);
             }
+            break;
+
+            default:
+            break;
+
         }
 
         return retVal;
     }
 
-    std::shared_ptr<TorrentAttribute> TorrentFileDecoder::decodeDictionary(const std::string& torrentFileContents, unsigned int& i)
+    std::shared_ptr<TorrentDictAttribute> TorrentFileDecoder::decodeDictionary(const std::string& torrentFileContents, unsigned int& i)
     {
-        i += 0xffffffffu;
-        return nullptr;
+        std::cout<<"Decoding dict"<<std::endl;
+
+        std::shared_ptr<TorrentDictAttribute> retVal = std::shared_ptr<TorrentDictAttribute>(new TorrentDictAttribute());
+        
+        i++;
+
+        while ('e' != torrentFileContents.at(i))
+        {
+            auto key = decodeString(torrentFileContents, i);
+            auto value = decodeAttributes(torrentFileContents, i);
+            std::cout<<"Add entry "<<key->getValue()<<std::endl;
+            retVal.get()->addAttribute(key->getValue(), value);
+            using namespace std::chrono_literals;
+            std::this_thread::sleep_for(2000ms);
+        }
+
+        i++;
+
+        return retVal;
     }
 
     std::shared_ptr<TorrentAttribute> TorrentFileDecoder::decodeInteger(const std::string& torrentFileContents, unsigned int& i)
     {
-        i += 0xffffffffu;
+        i += (torrentFileContents.find_first_of('e', i) - i) + 1u;
         return nullptr;
     }
 
-    std::shared_ptr<TorrentAttribute> TorrentFileDecoder::decodeList(const std::string& torrentFileContents, unsigned int& i)
+    std::shared_ptr<TorrentListAttribute> TorrentFileDecoder::decodeList(const std::string& torrentFileContents, unsigned int& i)
     {
-        i += 0xffffffffu;
-        return nullptr;
+        std::shared_ptr<TorrentListAttribute> retVal = std::shared_ptr<TorrentListAttribute>(new TorrentListAttribute());
+        i++;
+        
+        while ('e' != torrentFileContents.at(i))
+        {
+            retVal.get()->addValue(decodeAttributes(torrentFileContents, i));
+        }
+
+        i++;
+        
+        return retVal;
     }
 
-    std::shared_ptr<TorrentAttribute> TorrentFileDecoder::decodeString(const std::string& torrentFileContents, unsigned int& i)
+    std::shared_ptr<TorrentStringAttribute> TorrentFileDecoder::decodeString(const std::string& torrentFileContents, unsigned int& i)
     {
         const size_t delimiterPos = torrentFileContents.find_first_of(TORRENT_VALUE_DELIMITER, i);
 
@@ -118,16 +156,14 @@ namespace ztorrent
         // Ok let's deal with this mess
         const std::string lengthString = torrentFileContents.substr(i, delimiterPos - i);
 
-        std::cout<<"lengthString: "<<lengthString<<std::endl;
-
         int stringLength = std::atoi(lengthString.c_str());
 
         std::string theString = torrentFileContents.substr(delimiterPos + 1u, stringLength);
 
         std::cout<<"The string: "<<theString<<std::endl;
 
-        i += lengthString.size() + theString.size();
+        i += lengthString.size() + theString.size() + 1u;
 
-        return nullptr;
+        return std::shared_ptr<TorrentStringAttribute>(new TorrentStringAttribute(std::string(theString)));
     }
 }
