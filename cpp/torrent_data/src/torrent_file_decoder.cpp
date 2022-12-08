@@ -5,8 +5,6 @@
 #include "torrent_int_attribute.h"
 #include <string>
 #include <iostream>
-#include <chrono>
-#include <thread>
 
 namespace ztorrent
 {
@@ -74,8 +72,6 @@ namespace ztorrent
             auto value = decodeAttributes(torrentFileContents, i);
             std::cout<<"Add entry "<<key->getValue()<<std::endl;
             retVal.get()->addAttribute(key->getValue(), value);
-            using namespace std::chrono_literals;
-            std::this_thread::sleep_for(2000ms);
         }
 
         i++;
@@ -125,16 +121,15 @@ namespace ztorrent
             return nullptr;
         }
 
-        // Ok let's deal with this mess
+        /* Ok let's deal with this mess... */
         const std::string lengthString = torrentFileContents.substr(i, delimiterPos - i);
 
         unsigned int stringLength = std::atoi(lengthString.c_str());
 
+        /* ... remembering to skip the ':' between length and value */
         std::string theString = torrentFileContents.substr(delimiterPos + 1u, stringLength);
 
-        std::cout<<"The string: "<<theString<<std::endl;
-
-        i += lengthString.size() + theString.size();
+        i += lengthString.length() + theString.length();
 
         i++;
 
