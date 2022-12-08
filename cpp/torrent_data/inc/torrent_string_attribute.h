@@ -1,9 +1,7 @@
 #pragma once
 
 #include "torrent_attribute.h"
-#include <map>
 #include <string>
-#include <memory>
 
 namespace ztorrent
 {

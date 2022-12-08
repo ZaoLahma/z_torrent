@@ -8,6 +8,7 @@ namespace ztorrent
     class TorrentListAttribute;
     class TorrentDictAttribute;
     class TorrentStringAttribute;
+    class TorrentIntAttribute;
 
     class TorrentFileDecoder
     {
@@ -18,7 +19,7 @@ namespace ztorrent
         static std::shared_ptr<TorrentAttribute> decodeAttributes(const std::string& torrentFileContents, unsigned int& i);
         static std::shared_ptr<TorrentDictAttribute> decodeDictionary(const std::string& torrentFileContents, unsigned int& i);
         static std::shared_ptr<TorrentListAttribute> decodeList(const std::string& torrentFileContents, unsigned int& i);
-        static std::shared_ptr<TorrentAttribute> decodeInteger(const std::string& torrentFileContents, unsigned int& i);
+        static std::shared_ptr<TorrentIntAttribute> decodeInteger(const std::string& torrentFileContents, unsigned int& i);
         static std::shared_ptr<TorrentStringAttribute> decodeString(const std::string& torrentFileContents, unsigned int& i);
 
         private:

@@ -36,8 +36,6 @@ namespace ztorrent
     {
         std::string fileContents((std::istreambuf_iterator<char>(torrentFile)), std::istreambuf_iterator<char>());
 
-        std::cout<<"fileContents: "<<fileContents<<std::endl;
-
         std::shared_ptr<TorrentAttribute> decodedFile = TorrentFileDecoder::decodeTorrentFileContents(fileContents);
     }
 }

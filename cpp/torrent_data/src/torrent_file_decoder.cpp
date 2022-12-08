@@ -2,48 +2,11 @@
 #include "torrent_dict_attribute.h"
 #include "torrent_list_attribute.h"
 #include "torrent_string_attribute.h"
+#include "torrent_int_attribute.h"
 #include <string>
 #include <iostream>
 #include <chrono>
 #include <thread>
-
-
-/*
-d
-    8:announce
-        35:https://torrent.ubuntu.com/announce
-        13:announce-list
-        l
-            l
-                35:https://torrent.ubuntu.com/announce
-            e
-            l
-                40:https://ipv6.torrent.ubuntu.com/announce
-            e
-        e
-        7:comment
-        29:Ubuntu CD releases.ubuntu.com
-        10:created by
-        13:mktorrent 1.1
-        13:creation date
-            i
-                1666283028
-            e
-        4:info
-        d
-            6:length
-            i
-                4071903232
-            e
-            4:name
-            30:ubuntu-22.10-desktop-amd64.iso
-            12:piece length
-            i
-                262144
-            e
-            6:pieces
-            310680:
-*/
 
 namespace ztorrent
 {
@@ -67,7 +30,7 @@ namespace ztorrent
         switch (typeIndicator)
         {
             case 'd':
-                retVal = decodeDictionary(torrentFileContents, i); /* Should this be the entry point?! */
+                retVal = decodeDictionary(torrentFileContents, i);
             break;
             case 'l':
                 retVal = decodeList(torrentFileContents, i);
@@ -117,13 +80,24 @@ namespace ztorrent
 
         i++;
 
+        std::cout<<"End dict"<<std::endl;
+
         return retVal;
     }
 
-    std::shared_ptr<TorrentAttribute> TorrentFileDecoder::decodeInteger(const std::string& torrentFileContents, unsigned int& i)
+    std::shared_ptr<TorrentIntAttribute> TorrentFileDecoder::decodeInteger(const std::string& torrentFileContents, unsigned int& i)
     {
-        i += (torrentFileContents.find_first_of('e', i) - i) + 1u;
-        return nullptr;
+        i++;
+
+        std::string integerString = torrentFileContents.substr(i, torrentFileContents.find_first_of('e', i) - i);
+
+        unsigned int theInteger = atoi(integerString.c_str());
+
+        i += integerString.length();
+
+        i++;
+
+        return std::shared_ptr<TorrentIntAttribute>(new TorrentIntAttribute(theInteger));
     }
 
     std::shared_ptr<TorrentListAttribute> TorrentFileDecoder::decodeList(const std::string& torrentFileContents, unsigned int& i)
@@ -145,8 +119,6 @@ namespace ztorrent
     {
         const size_t delimiterPos = torrentFileContents.find_first_of(TORRENT_VALUE_DELIMITER, i);
 
-        std::cout<<"delimiterPos: "<<delimiterPos<<std::endl;
-
         if (std::string::npos == delimiterPos)
         {
             std::cout<<"Fail!"<<std::endl;
@@ -156,13 +128,15 @@ namespace ztorrent
         // Ok let's deal with this mess
         const std::string lengthString = torrentFileContents.substr(i, delimiterPos - i);
 
-        int stringLength = std::atoi(lengthString.c_str());
+        unsigned int stringLength = std::atoi(lengthString.c_str());
 
         std::string theString = torrentFileContents.substr(delimiterPos + 1u, stringLength);
 
         std::cout<<"The string: "<<theString<<std::endl;
 
-        i += lengthString.size() + theString.size() + 1u;
+        i += lengthString.size() + theString.size();
+
+        i++;
 
         return std::shared_ptr<TorrentStringAttribute>(new TorrentStringAttribute(std::string(theString)));
     }
