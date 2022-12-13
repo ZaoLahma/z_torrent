@@ -1,8 +1,9 @@
-#include <config.h>
+#include "config.h"
 
-#include <iostream>
 #include <fstream>
 #include <type_traits>
+
+#include "log_context.h"
 
 namespace ztorrent
 {
@@ -64,7 +65,7 @@ namespace ztorrent
                 toAdd = ConfigValue(std::stoi(entryStringValue));
                 break;
                 default:
-                std::cout<<"Not handled entry type: "<<static_cast<std::underlying_type_t<ConfigEntryType>>(entryType)<<std::endl;
+                LogContext::getApi()->getLogger("Config")->log("Not handled entry type: %s", static_cast<std::underlying_type_t<ConfigEntryType>>(entryType));
                 break;
             }
 

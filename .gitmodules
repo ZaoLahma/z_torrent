@@ -1,0 +1,3 @@
+[submodule "cpp/zlog"]
+	path = cpp/zlog
+	url = git@github.com:ZaoLahma/zlog.git

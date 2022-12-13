@@ -16,6 +16,7 @@ add_subdirectory(core)
 add_subdirectory(config)
 add_subdirectory(torrent_file_handler)
 add_subdirectory(torrent_data)
+add_subdirectory(zlog/cpp/zlog)
 
 # Link the executable
 target_link_libraries(ztorrent
@@ -24,6 +25,7 @@ target_link_libraries(ztorrent
         config
         torrentfilehandler
         core
+        zlog
 )
 
 # Link the test executable
@@ -35,4 +37,5 @@ target_link_libraries(test_ztorrent
         config
         torrentfilehandler
         core
+        zlog
 )

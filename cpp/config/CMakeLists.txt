@@ -1,5 +1,10 @@
 add_library(config "")
 
+target_link_libraries(config
+    PUBLIC
+        core
+  )
+
 target_sources(config
   PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/inc/config.h
