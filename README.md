@@ -1,2 +1,2 @@
 # z_torrent
-A bit torrent client
+A bit torrent client, eventually
