@@ -3,8 +3,9 @@
 #include "torrent_list_attribute.h"
 #include "torrent_string_attribute.h"
 #include "torrent_int_attribute.h"
+#include "log_context.h"
+
 #include <string>
-#include <iostream>
 
 namespace ztorrent
 {
@@ -23,7 +24,7 @@ namespace ztorrent
 
         char typeIndicator = torrentFileContents.at(i);
 
-        std::cout<<"typeIndicator: "<<typeIndicator<<std::endl;
+        LOG_DEBUG("TorrentFileDecoder", "typeIndicator: %c", typeIndicator);
 
         switch (typeIndicator)
         {
@@ -60,7 +61,7 @@ namespace ztorrent
 
     std::shared_ptr<TorrentDictAttribute> TorrentFileDecoder::decodeDictionary(const std::string& torrentFileContents, unsigned int& i)
     {
-        std::cout<<"Decoding dict"<<std::endl;
+        LOG_DEBUG_STRING("TorrentFileDecoder", "Decoding dict");
 
         std::shared_ptr<TorrentDictAttribute> retVal = std::shared_ptr<TorrentDictAttribute>(new TorrentDictAttribute());
         
@@ -70,13 +71,13 @@ namespace ztorrent
         {
             auto key = decodeString(torrentFileContents, i);
             auto value = decodeAttributes(torrentFileContents, i);
-            std::cout<<"Add entry "<<key->getValue()<<std::endl;
+            LOG_DEBUG("TorrentFileDecoder", "Add entry %s", key->getValue().c_str());
             retVal.get()->addAttribute(key->getValue(), value);
         }
 
         i++;
 
-        std::cout<<"End dict"<<std::endl;
+        LOG_DEBUG_STRING("TorrentFileDecoder", "End dict");
 
         return retVal;
     }
@@ -117,7 +118,7 @@ namespace ztorrent
 
         if (std::string::npos == delimiterPos)
         {
-            std::cout<<"Fail!"<<std::endl;
+            LOG_ERROR("TorrentFileDecoder", "Fail! torrentFileContents did not contain the expected %s", TORRENT_VALUE_DELIMITER.c_str());
             return nullptr;
         }
 

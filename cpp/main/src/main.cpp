@@ -6,10 +6,11 @@
 #include "torrent_file_thread.h"
 #include "watch_dir_task.h"
 #include "torrent_file_decoder_task.h"
+#include "log_context.h"
 
 int main(int argc, char* argv[])
 {
-    std::cout<<"ZTorrent"<<std::endl;
+    LOG_INFO("ZTorrent started", "");
 
     if (argc != 2)
     {
@@ -42,4 +43,6 @@ int main(int argc, char* argv[])
     /* Switch it on, take cover behind that rock, and carefully peek over at the explosion */
     const bool runTaskInNewThread = false;
     torrentFileThread.start(runTaskInNewThread);
+
+    LOG_INFO("ZTorrent stopped", "");
 }

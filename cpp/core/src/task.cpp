@@ -6,4 +6,9 @@ namespace ztorrent
     {
         
     }
+
+    const std::string& Task::getTaskName()
+    {
+        return mTaskName;
+    }
 }

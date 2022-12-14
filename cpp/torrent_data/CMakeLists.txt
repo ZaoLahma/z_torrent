@@ -1,5 +1,14 @@
 add_library(torrentdata "")
 
+target_compile_definitions(torrentdata PRIVATE 
+    $<$<CONFIG:Debug>:DEBUG=1>
+  )
+
+target_link_libraries(torrentdata
+    PUBLIC
+        core
+  )
+
 target_sources(torrentdata
   PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/inc/torrent_attribute_type.h

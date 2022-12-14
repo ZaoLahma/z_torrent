@@ -1,5 +1,9 @@
 add_library(config "")
 
+target_compile_definitions(config PRIVATE 
+    $<$<CONFIG:Debug>:DEBUG=1>
+  )
+
 target_link_libraries(config
     PUBLIC
         core

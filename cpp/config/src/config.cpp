@@ -65,7 +65,7 @@ namespace ztorrent
                 toAdd = ConfigValue(std::stoi(entryStringValue));
                 break;
                 default:
-                LogContext::getApi()->getLogger("Config")->log("Not handled entry type: %s", static_cast<std::underlying_type_t<ConfigEntryType>>(entryType));
+                LOG_DEBUG("config", "Not handled entry type: %s", static_cast<std::underlying_type_t<ConfigEntryType>>(entryType));
                 break;
             }
 
@@ -80,7 +80,7 @@ namespace ztorrent
             return mConfigEntries.at(identifier);
         }
 
-        std::cout<<"ERROR: Config entry "<<identifier<<" not defined"<<std::endl;
+        LOG_ERROR("config", "Config entry %s not defined", identifier.c_str());
 
         return Config::NOT_VALID_CONFIG_VALUE;
     }

@@ -4,32 +4,27 @@ namespace ztorrent
 {
     /* Static initializations */
     LogContext* LogContext::S_INSTANCE = nullptr;
+    std::mutex LogContext::sInstanceCreationMutex;
+    zlog::ZLog LogContext::sLogger;
 
-    std::map<std::string, std::shared_ptr<zlog::ZLog>> LogContext::sLoggers;
-
+    /* The rest */
     LogContext* LogContext::getApi()
     {
-        /* TODO: Make me thread safe */
         if (nullptr == S_INSTANCE)
         {
-            S_INSTANCE = new LogContext();
+            sInstanceCreationMutex.lock();
+            if (nullptr == S_INSTANCE)
+            {
+                S_INSTANCE = new LogContext();
+            }
+            sInstanceCreationMutex.unlock();
         }
 
         return S_INSTANCE;
     }
-
-    void LogContext::addLogger(const std::string& context, std::ostream& logStream)
-    {
-        sLoggers[context] = std::make_shared<zlog::ZLog>(zlog::ZLog(context, logStream));
-    }
     
-    std::shared_ptr<zlog::ZLog> LogContext::getLogger(const std::string& context)
+    zlog::ZLog& LogContext::getLogger()
     {
-        if (sLoggers.end() == sLoggers.find(context))
-        {
-            sLoggers[context] = std::make_shared<zlog::ZLog>(zlog::ZLog(context));
-        }
-
-        return sLoggers[context];
+        return sLogger;
     }
 }

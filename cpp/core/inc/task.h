@@ -11,6 +11,8 @@ namespace ztorrent
         Task(const std::string& taskName);
         virtual ~Task() = default;
 
+        const std::string& getTaskName();
+
         virtual void runTask() = 0;
 
         protected:
