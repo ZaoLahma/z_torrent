@@ -22,7 +22,7 @@ namespace ztorrent
     {
         for (const auto& torrentFilePath : mFilesToDecode)
         {
-            LOG_DEBUG(getTaskName(), "torrentFilePath to decode: %s", torrentFilePath);
+            LOG_DEBUG("TorrentFileDecoderTask", "torrentFilePath to decode: %s", torrentFilePath.c_str());
 
             auto torrentFile = std::ifstream(torrentFilePath);
 

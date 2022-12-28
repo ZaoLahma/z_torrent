@@ -15,10 +15,14 @@ namespace ztorrent
 
         void addAttribute(const std::string& name, std::shared_ptr<TorrentAttribute> value);
         std::shared_ptr<TorrentAttribute> getAttribute(const std::string& attrKey);
+        void setDictHash(const std::string& hash);
+        const std::string& getDictHash() const;
 
         protected:
         std::map<std::string, std::shared_ptr<TorrentAttribute>> mDictionary;
+        std::string mDictHash;
 
         private:
+        static const std::string S_INVALID_HASH;
     };
 }

@@ -1,3 +1,9 @@
-[submodule "cpp/zlog"]
-	path = cpp/zlog
+[submodule "cpp/external_deps/--force"]
+	path = cpp/external_deps/--force
 	url = git@github.com:ZaoLahma/zlog.git
+[submodule "cpp/external_deps/zlog"]
+	path = cpp/external_deps/zlog
+	url = git@github.com:ZaoLahma/zlog.git
+[submodule "cpp/external_deps/sha1"]
+	path = cpp/external_deps/sha1
+	url = https://github.com/vog/sha1.git

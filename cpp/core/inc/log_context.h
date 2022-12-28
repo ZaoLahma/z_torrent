@@ -21,6 +21,7 @@
     #define LOG_DEBUG_STRING(context, toLog)   ztorrent::LogContext::getApi()->getLogger().logExtra(FILE_LINE context, toLog)
     #define LOG_DEBUG(context, toLog, args...) ztorrent::LogContext::getApi()->getLogger().logExtra(FILE_LINE context, toLog, args)
 #else
+    #define LOG_DEBUG_STRING(context, toLog)
     #define LOG_DEBUG(context, toLog, args...)
 #endif
 

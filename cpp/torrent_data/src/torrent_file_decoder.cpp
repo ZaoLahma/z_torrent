@@ -7,6 +7,9 @@
 #include "torrent_int_attribute.h"
 #include "log_context.h"
 
+/* EXTERNAL DEPS */
+#include "sha1.hpp"
+
 #include <string>
 
 namespace ztorrent
@@ -66,6 +69,8 @@ namespace ztorrent
         LOG_DEBUG_STRING("TorrentFileDecoder", "Decoding dict");
 
         std::shared_ptr<TorrentDictAttribute> retVal = std::shared_ptr<TorrentDictAttribute>(new TorrentDictAttribute());
+
+        const size_t dictStart = i;
         
         i++;
 
@@ -76,6 +81,21 @@ namespace ztorrent
             LOG_DEBUG("TorrentFileDecoder", "Add entry %s", key->getValue().c_str());
             retVal.get()->addAttribute(key->getValue(), value);
         }
+
+        const size_t dictEnd = i;
+
+        const std::string& dictString = torrentFileContents.substr(dictStart, dictEnd);
+
+        LOG_DEBUG("TorrentFileDecoder", "dictString: %s", dictString.c_str());
+
+        SHA1 checksum;
+
+        checksum.update(dictString);
+        const std::string hash = checksum.final();
+
+        LOG_DEBUG("TorrentFileDecoder", "hash: %s", hash.c_str());
+
+        retVal.get()->setDictHash(hash);
 
         i++;
 

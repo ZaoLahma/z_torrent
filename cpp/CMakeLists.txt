@@ -1,7 +1,6 @@
 add_executable(ztorrent main/src/main.cpp)
 target_compile_options(ztorrent PRIVATE -Werror -Wall -Wextra -Wconversion)
 
-
 add_executable(test_ztorrent 
     test/src/main.cpp 
     util/test/util_test.cpp 
@@ -16,7 +15,11 @@ add_subdirectory(core)
 add_subdirectory(config)
 add_subdirectory(torrent_file_handler)
 add_subdirectory(torrent_data)
-add_subdirectory(zlog/cpp/zlog)
+add_subdirectory(external_deps)
+
+target_compile_definitions(core PUBLIC 
+    $<$<CONFIG:Debug>:DEBUG=1>
+  )
 
 # Link the executable
 target_link_libraries(ztorrent

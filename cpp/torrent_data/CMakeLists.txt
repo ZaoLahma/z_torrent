@@ -1,12 +1,9 @@
 add_library(torrentdata "")
 
-target_compile_definitions(torrentdata PRIVATE 
-    $<$<CONFIG:Debug>:DEBUG=1>
-  )
-
 target_link_libraries(torrentdata
     PUBLIC
         core
+        sha1
   )
 
 target_sources(torrentdata
