@@ -1,3 +1,5 @@
+#include "torrent_data.h"
+#include "torrent_data_impl.h"
 #include "torrent_file_decoder.h"
 #include "torrent_dict_attribute.h"
 #include "torrent_list_attribute.h"
@@ -11,11 +13,11 @@ namespace ztorrent
 {
     const std::string TorrentFileDecoder::TORRENT_VALUE_DELIMITER = ":";
 
-    std::shared_ptr<TorrentAttribute> TorrentFileDecoder::decodeTorrentFileContents(const std::string& torrentFileContents)
+    std::shared_ptr<TorrentData> TorrentFileDecoder::decodeTorrentFileContents(const std::string& torrentFileContents)
     {
         unsigned int index = 0u;
 
-        return decodeAttributes(torrentFileContents, index);
+        return std::make_shared<TorrentDataImpl>(TorrentDataImpl(decodeAttributes(torrentFileContents, index)));
     }
 
     std::shared_ptr<TorrentAttribute> TorrentFileDecoder::decodeAttributes(const std::string& torrentFileContents, unsigned int& i)

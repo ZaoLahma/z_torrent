@@ -11,8 +11,10 @@ namespace ztorrent
     {
         public:
         TorrentDictAttribute();
+        virtual ~TorrentDictAttribute();
 
         void addAttribute(const std::string& name, std::shared_ptr<TorrentAttribute> value);
+        std::shared_ptr<TorrentAttribute> getAttribute(const std::string& attrKey);
 
         protected:
         std::map<std::string, std::shared_ptr<TorrentAttribute>> mDictionary;

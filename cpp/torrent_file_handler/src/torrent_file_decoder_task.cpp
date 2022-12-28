@@ -1,6 +1,6 @@
 #include "torrent_file_decoder_task.h"
 #include "torrent_file_decoder.h"
-#include "torrent_attribute.h"
+#include "torrent_data.h"
 #include "log_context.h"
 
 #include <iostream>
@@ -37,6 +37,6 @@ namespace ztorrent
     {
         std::string fileContents((std::istreambuf_iterator<char>(torrentFile)), std::istreambuf_iterator<char>());
 
-        std::shared_ptr<TorrentAttribute> decodedFile = TorrentFileDecoder::decodeTorrentFileContents(fileContents);
+        std::shared_ptr<TorrentData> decodedFile = TorrentFileDecoder::decodeTorrentFileContents(fileContents);
     }
 }

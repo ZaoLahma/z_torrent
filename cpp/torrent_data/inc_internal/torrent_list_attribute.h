@@ -12,6 +12,7 @@ namespace ztorrent
     {
         public:
         TorrentListAttribute();
+        ~TorrentListAttribute();
 
         void addValue(std::shared_ptr<TorrentAttribute> value);
 

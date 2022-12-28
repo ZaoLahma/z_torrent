@@ -8,6 +8,11 @@ namespace ztorrent
 
     }
 
+    TorrentListAttribute::~TorrentListAttribute()
+    {
+        mValue.clear();
+    }
+
     void TorrentListAttribute::addValue(std::shared_ptr<TorrentAttribute> value)
     {
         mValue.push_back(value);

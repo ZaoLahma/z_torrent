@@ -7,7 +7,9 @@ namespace ztorrent
     class TorrentAttribute
     {
         public:
+        TorrentAttribute() = delete;
         TorrentAttribute(const TorrentAttributeType& torrentAttributeType);
+        virtual ~TorrentAttribute() = default;
 
         const TorrentAttributeType& getAttributeType();
 
