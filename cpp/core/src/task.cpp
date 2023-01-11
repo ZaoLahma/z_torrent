@@ -2,7 +2,7 @@
 
 namespace ztorrent
 {
-    Task::Task(const std::string& taskName) : mTaskName(taskName)
+    Task::Task(const std::string& taskName) : mTaskName(taskName), mTaskCompleted(false)
     {
         
     }
@@ -10,5 +10,15 @@ namespace ztorrent
     const std::string& Task::getTaskName()
     {
         return mTaskName;
+    }
+
+    void Task::markTaskAsCompleted()
+    {
+        mTaskCompleted = true;
+    }
+
+    bool Task::taskHasRunToCompletion()
+    {
+        return mTaskCompleted;
     }
 }

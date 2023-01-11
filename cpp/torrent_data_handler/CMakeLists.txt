@@ -3,6 +3,7 @@ add_library(torrentdatahandler "")
 target_link_libraries(torrentdatahandler
   PUBLIC
     core
+    torrentdata
   )
 
 target_sources(torrentdatahandler

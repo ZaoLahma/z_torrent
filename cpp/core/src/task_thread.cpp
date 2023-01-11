@@ -1,6 +1,7 @@
 #include "task_thread.h"
 
 #include <thread>
+#include <algorithm>
 
 namespace ztorrent
 {
@@ -17,12 +18,25 @@ namespace ztorrent
 
     void TaskThread::run()
     {
+        std::vector<std::shared_ptr<Task>> completedTasks;
         while (mRunning)
         {
             for (auto&& task : mTasks)
             {
                 task->runTask();
+
+                if (task->taskHasRunToCompletion())
+                {
+                    completedTasks.push_back(task);
+                }
             }
+
+            for (auto&& completedTask : completedTasks)
+            {
+                mTasks.erase(std::remove(mTasks.begin(), mTasks.end(), completedTask), mTasks.end());
+            }
+
+            completedTasks.clear();
 
             /* No need to rush */
             std::this_thread::sleep_for(mTaskPeriodicityMs);
