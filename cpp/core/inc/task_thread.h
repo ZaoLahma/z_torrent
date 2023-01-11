@@ -7,6 +7,7 @@
 #include <vector>
 #include <memory>
 #include <chrono>
+#include <mutex>
 
 namespace ztorrent
 {
@@ -24,6 +25,7 @@ namespace ztorrent
         const std::string mThreadName;
         std::vector<std::shared_ptr<Task>> mTasks;
         const std::chrono::milliseconds mTaskPeriodicityMs;
+        std::mutex mTaskListMutex;
 
         void run();
     };

@@ -13,7 +13,9 @@ namespace ztorrent
 
     void TaskThread::addTask(std::shared_ptr<Task> task)
     {
+        std::lock_guard<std::mutex> addTaskLock(mTaskListMutex);
         mTasks.push_back(task);
+
     }
 
     void TaskThread::run()
@@ -21,6 +23,7 @@ namespace ztorrent
         std::vector<std::shared_ptr<Task>> completedTasks;
         while (mRunning)
         {
+            std::lock_guard<std::mutex> addTaskLock(mTaskListMutex);
             for (auto&& task : mTasks)
             {
                 task->runTask();
