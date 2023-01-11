@@ -6,18 +6,15 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <chrono>
 
 namespace ztorrent
 {
-    /*
-        The idea / purpose of this class is for it to be
-        the thing in the system that handles torrent files.
-    */
-    class TorrentFileThread : public ThreadObject
+    class TaskThread : public ThreadObject
     {
         public:
-        TorrentFileThread() = delete;
-        TorrentFileThread(const std::string& threadName);
+        TaskThread() = delete;
+        TaskThread(const std::string& threadName, const std::chrono::milliseconds taskPeriodicityMs);
 
         void addTask(std::shared_ptr<Task> task);
 
@@ -26,6 +23,7 @@ namespace ztorrent
         private:
         const std::string mThreadName;
         std::vector<std::shared_ptr<Task>> mTasks;
+        const std::chrono::milliseconds mTaskPeriodicityMs;
 
         void run();
     };

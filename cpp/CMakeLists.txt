@@ -15,6 +15,7 @@ add_subdirectory(core)
 add_subdirectory(config)
 add_subdirectory(torrent_file_handler)
 add_subdirectory(torrent_data)
+add_subdirectory(torrent_data_handler)
 add_subdirectory(external_deps)
 
 target_compile_definitions(core PUBLIC 
@@ -27,6 +28,7 @@ target_link_libraries(ztorrent
         util
         config
         torrentfilehandler
+        torrentdatahandler
         core
         zlog
 )
@@ -39,6 +41,7 @@ target_link_libraries(test_ztorrent
         util
         config
         torrentfilehandler
+        torrentdatahandler
         core
         zlog
 )

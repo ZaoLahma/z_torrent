@@ -31,7 +31,6 @@ namespace ztorrent
     {
         public:
         static LogContext* getApi();
-        void addLogger(const std::string& context, std::ostream& logStream);
         zlog::ZLog& getLogger();
 
         protected:

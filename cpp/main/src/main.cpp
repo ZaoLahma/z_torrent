@@ -3,7 +3,7 @@
 #include <thread>
 
 #include "config.h"
-#include "torrent_file_thread.h"
+#include "task_thread.h"
 #include "watch_dir_task.h"
 #include "torrent_file_decoder_task.h"
 #include "log_context.h"
@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
 
 
     /* Define our threads */
-    ztorrent::TorrentFileThread torrentFileThread("TorrentFileThread");
+    ztorrent::TaskThread torrentFileThread("TorrentFileThread", std::chrono::milliseconds(2000u));
 
     torrentFileThread.addTask(watchDirTask);
     torrentFileThread.addTask(torrentFileDecoderTask);
